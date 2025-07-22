@@ -1,0 +1,28 @@
+# Vite build output
+dist/
+.vite/
+
+# Node.js dependencies
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Local env files
+.env*
+!.env.example
+
+# Editor-specific files
+.idea/                # WebStorm project files
+*.iml                 # IntelliJ project module files
+
+# OS-specific
+.DS_Store             # macOS
+Thumbs.db             # Windows
+
+# Cache
+.cac
