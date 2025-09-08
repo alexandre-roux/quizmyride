@@ -1,14 +1,19 @@
 import React from 'react';
+import './Home.scss';
 
-const Home = () => {
-    const playGongSound = () => {
+const Home = (props) => {
+    const onButtonClick = () => {
+        // Play gong sound
         const audio = new Audio('/sounds/bvg-gong.mp3');
         audio.play();
+
+        // Start the quiz
+        props.setDisplayHome(false);
+        props.setDisplayQuiz(true);
     };
 
-    return (
-        <div className="home-container">
-            <h1>Welcome to Quiz My Ride</h1>
+    return (<div className="home-container">
+        <h1>Welcome to Quiz My Ride!</h1>
             <img src="/images/logo.png" className="logo" alt="Quiz My Ride Logo"/>
             <p className="intro-text">
                 Think you know the BVG bus fleet like the back of your Fahrkarte?<br/>
@@ -18,12 +23,11 @@ const Home = () => {
                 survive.<br/>
                 Guess the model, earn eternal respect, and maybe you’ll become the unofficial BVG Bus Master.
             </p>
-            <button onClick={playGongSound}>
+        <button onClick={onButtonClick}>
                 <ion-icon name="arrow-forward-outline"></ion-icon>
                 Start the quiz
             </button>
-        </div>
-    );
+    </div>);
 };
 
 export default Home;
