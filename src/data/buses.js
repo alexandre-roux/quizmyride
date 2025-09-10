@@ -5,31 +5,31 @@ const buses = [
         id: "vdl-citea-lle-120",
         manufacturer: "VDL",
         model: "Citea LLE-120",
-        image: `${base}images/busses/citea-lle-120.jpg`,
+        image: `${base}images/buses/citea-lle-120.jpg`,
     },
     {
         id: "mercedes-citaro-c2",
         manufacturer: "Mercedes-Benz",
         model: "Citaro C2",
-        image: `${base}images/busses/citaro-c2.jpg`,
+        image: `${base}images/buses/citaro-c2.jpg`,
     },
     {
         id: "solaris-urbino-12-electric",
         manufacturer: "Solaris",
         model: "Urbino 12 electric",
-        image: `${base}images/busses/urbino-12-electric.jpg`,
+        image: `${base}images/buses/urbino-12-electric.jpg`,
     },
     {
         id: "mercedes-ecitaro",
         manufacturer: "Mercedes-Benz",
         model: "eCitaro",
-        image: `${base}images/busses/ecitaro.jpg`,
+        image: `${base}images/buses/ecitaro.jpg`,
     },
     {
         id: "ebusco-2-2",
         manufacturer: "Ebusco",
         model: "Ebusco 2.2",
-        image: `${base}images/busses/ebusco-2-2.jpg`,
+        image: `${base}images/buses/ebusco-2-2.jpg`,
     },
 ];
 
