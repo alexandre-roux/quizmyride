@@ -9,19 +9,37 @@ const Quiz = (props) => {
 
     useEffect(() => {
         // Create the quiz when the component mounts
-        // Create an array with random elements from buses.js
+        // Shuffle buses and pick the requested number of questions
         const shuffled = [...buses].sort(() => Math.random() - 0.5);
         const picked = shuffled.slice(0, props.numberOfQuestions);
-        setSelectedBuses(picked);
-        console.log(picked);
-    }, [])
+
+        // Get all bus names
+        const allNames = buses.map(b => b.model);
+
+        // Build answers array for each picked bus: 4 names of other buses
+        const pickedWithAnswers = picked.map(bus => {
+            // Candidate names excluding the current bus
+            const candidates = allNames.filter(name => name !== bus.model);
+
+            // Shuffle candidates and take the first 4
+            const answers = [...candidates]
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 4);
+
+            return {...bus, answers};
+        });
+
+        // Save the selected buses in state
+        setSelectedBuses(pickedWithAnswers);
+    }, [props.numberOfQuestions]);
+
 
     useEffect(() => {
         if (selectedBusIndex >= props.numberOfQuestions) {
             props.setDisplayQuiz(false);
             props.setDisplayResults(true);
         }
-    }, [selectedBusIndex]);
+    }, [props, selectedBusIndex]);
 
     return (
         <div className="quiz-container">
