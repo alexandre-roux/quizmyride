@@ -8,6 +8,7 @@ const Home = (props) => {
         setIsFadingOut(true);
         // Play gong sound
         const audio = new Audio('/sounds/bvg-gong.mp3');
+        audio.volume = 0.8;
         audio.play();
 
         // Start the quiz after fade-out completes
@@ -16,19 +17,19 @@ const Home = (props) => {
 
     return (<div className={`home-container fade-in ${isFadingOut ? 'fade-out' : ''}`}>
         <h1>Welcome to Quiz My Ride!</h1>
-            <img src="/images/logo.png" className="logo" alt="Quiz My Ride Logo"/>
-            <p className="intro-text">
-                Think you know the BVG bus fleet like the back of your Fahrkarte?<br/>
-                Can you tell a Citaro from a Citea faster than a bus at a green light?
-                <br/><br/>
-                Put your bus-spotting skills to the ultimate test in this quiz where only true bus nerds will
-                survive.<br/>
-                Guess the model, earn eternal respect, and maybe you’ll become the unofficial BVG Bus Master.
-            </p>
+        <img src="/images/logo.png" className="logo" alt="Quiz My Ride Logo"/>
+        <p className="intro-text">
+            Think you know the BVG bus fleet like the back of your Fahrkarte?<br/>
+            Can you tell a Citaro from a Citea faster than a bus at a green light?
+            <br/><br/>
+            Put your bus-spotting skills to the ultimate test in this quiz where only true bus nerds will
+            survive.<br/>
+            Guess the model, earn eternal respect, and maybe you’ll become the unofficial BVG Bus Master.
+        </p>
         <button onClick={onButtonClick}>
-                <ion-icon name="arrow-forward-outline"></ion-icon>
-                Start the quiz
-            </button>
+            <ion-icon name="arrow-forward-outline"></ion-icon>
+            Start the quiz
+        </button>
     </div>);
 };
 
