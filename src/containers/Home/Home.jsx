@@ -2,16 +2,19 @@ import React from 'react';
 import './Home.scss';
 
 const Home = (props) => {
+    const [isFadingOut, setIsFadingOut] = React.useState(false);
     const onButtonClick = () => {
+        // trigger fade-out animation
+        setIsFadingOut(true);
         // Play gong sound
         const audio = new Audio('/sounds/bvg-gong.mp3');
         audio.play();
 
-        // Start the quiz
-        props.setDisplayQuiz(true);
+        // Start the quiz after fade-out completes
+        setTimeout(() => props.setDisplayQuiz(true), 300);
     };
 
-    return (<div className="home-container">
+    return (<div className={`home-container fade-in ${isFadingOut ? 'fade-out' : ''}`}>
         <h1>Welcome to Quiz My Ride!</h1>
             <img src="/images/logo.png" className="logo" alt="Quiz My Ride Logo"/>
             <p className="intro-text">

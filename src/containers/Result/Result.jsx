@@ -1,9 +1,9 @@
 import React from 'react';
 import './Result.scss';
 
-const Result = (props) => {
+const Result = () => {
 
-    return (<div className="result-container">
+    return (<div className="result-container fade-in">
 
     </div>);
 };

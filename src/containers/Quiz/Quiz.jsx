@@ -6,6 +6,7 @@ import QuizCard from "../../component/QuizCard.jsx";
 const Quiz = (props) => {
     const [selectedBuses, setSelectedBuses] = React.useState([]);
     const [selectedBusIndex, setSelectedBusIndex] = React.useState(0);
+    const [isFadingOut, setIsFadingOut] = React.useState(false);
 
     useEffect(() => {
         // Create the quiz when the component mounts
@@ -38,13 +39,17 @@ const Quiz = (props) => {
 
     useEffect(() => {
         if (selectedBusIndex >= props.numberOfQuestions) {
-            props.setDisplayQuiz(false);
-            props.setDisplayResults(true);
+            // Trigger fade-out before navigating to results
+            setIsFadingOut(true);
+            setTimeout(() => {
+                props.setDisplayQuiz(false);
+                props.setDisplayResults(true);
+            }, 300);
         }
     }, [props, selectedBusIndex]);
 
     return (
-        <div className="quiz-container">
+        <div className={`quiz-container fade-in ${isFadingOut ? 'fade-out' : ''}`}>
             {(selectedBuses.length > 0) && (
                 <QuizCard selectedBus={selectedBuses[selectedBusIndex]}/>
             )}
