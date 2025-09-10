@@ -16,15 +16,17 @@ const Quiz = (props) => {
         // Get all bus names
         const allNames = buses.map(b => b.model);
 
-        // Build answers array for each picked bus: 4 names of other buses
+        // Build answers array for each picked bus: include the current bus name among the options
         const pickedWithAnswers = picked.map(bus => {
             // Candidate names excluding the current bus
             const candidates = allNames.filter(name => name !== bus.model);
 
-            // Shuffle candidates and take the first 4
-            const answers = [...candidates]
+            // Take 3 random other names and include the correct one, then shuffle
+            const options = [...candidates]
                 .sort(() => Math.random() - 0.5)
-                .slice(0, 4);
+                .slice(0, 3);
+
+            const answers = [...options, bus.model].sort(() => Math.random() - 0.5);
 
             return {...bus, answers};
         });
