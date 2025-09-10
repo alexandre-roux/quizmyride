@@ -3,10 +3,18 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+    width: 100%;
+    max-width: 1200px; /* constrain overall card width on large screens */
+    margin: 0 auto;
+
+    h2 {
+        margin-top: 0;
+    }
 
     img {
         height: 50vh;
-        max-width: 100%;
+        width: 100%; /* make image fill the card width */
+        max-width: 800px; /* shared visual width for both image and answers */
         object-fit: cover;
     }
 
@@ -15,7 +23,7 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 12px;
         width: 100%;
-        max-width: 520px;
+        max-width: 800px; /* match image width so two-button row equals image width */
         margin-top: 16px;
 
         /* Layout-only adjustments for buttons; visual styles come from global index.css */
