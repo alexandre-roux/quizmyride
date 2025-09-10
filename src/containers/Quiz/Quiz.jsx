@@ -1,20 +1,35 @@
 import React, {useEffect} from 'react';
 import './Quiz.scss';
 import buses from '../../data/buses';
+import QuizCard from "../../component/QuizCard.jsx";
 
-const Quiz = () => {
+const Quiz = (props) => {
     const [selectedBuses, setSelectedBuses] = React.useState([]);
+    const [selectedBusIndex, setSelectedBusIndex] = React.useState(0);
 
     useEffect(() => {
         // Create the quiz when the component mounts
-        // Create an array with 3 random elements from buses.js
+        // Create an array with random elements from buses.js
         const shuffled = [...buses].sort(() => Math.random() - 0.5);
-        setSelectedBuses(shuffled.slice(0, 3));
+        const picked = shuffled.slice(0, props.numberOfQuestions);
+        setSelectedBuses(picked);
+        console.log(picked);
     }, [])
 
-    return (<div className="quiz-container">
-        <h2>What model is it?</h2>
-    </div>);
+    useEffect(() => {
+        if (selectedBusIndex >= props.numberOfQuestions) {
+            props.setDisplayQuiz(false);
+            props.setDisplayResults(true);
+        }
+    }, [selectedBusIndex]);
+
+    return (
+        <div className="quiz-container">
+            {(selectedBuses.length > 0) && (
+                <QuizCard selectedBus={selectedBuses[selectedBusIndex]}/>
+            )}
+        </div>
+    );
 };
 
 export default Quiz;

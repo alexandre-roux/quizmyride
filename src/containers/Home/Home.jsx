@@ -8,7 +8,6 @@ const Home = (props) => {
         audio.play();
 
         // Start the quiz
-        props.setDisplayHome(false);
         props.setDisplayQuiz(true);
     };
 

@@ -1,19 +1,25 @@
 import './App.scss'
-import Home from "./components/Home/Home.jsx";
+import Home from "./containers/Home/Home.jsx";
+import Quiz from "./containers/Quiz/Quiz.jsx";
 import {useState} from "react";
-import Quiz from "./components/Quiz/Quiz.jsx";
+import Result from "./containers/Result/Result.jsx";
 
 function App() {
-    const [displayHome, setDisplayHome] = useState(true);
+    const numberOfQuestions = 3;
+
     const [displayQuiz, setDisplayQuiz] = useState(false);
+    const [displayResult, setDisplayResult] = useState(false);
 
     return (
         <div className="main-container">
-            {displayHome ? (
-                <Home setDisplayHome={setDisplayHome} setDisplayQuiz={setDisplayQuiz}/>
-            ) : displayQuiz ? (
-                <Quiz/>
-            ) : (<div/>)}
+            {displayQuiz ? (
+                <Quiz numberOfQuestions={numberOfQuestions} setDisplayQuiz={setDisplayQuiz}
+                      setDisplayResults={setDisplayResult}/>
+            ) : displayResult ? (
+                <Result/>
+            ) : (
+                <Home setDisplayQuiz={setDisplayQuiz}/>
+            )}
         </div>
     )
 }
