@@ -50,10 +50,15 @@ const Quiz = ({numberOfQuestions, setDisplayQuiz, setDisplayResult, setNumberOfG
         }
     }, [numberOfQuestions, setDisplayQuiz, setDisplayResult, selectedBusIndex]);
 
+    // Use a safe index to keep the last question visible during fade-out
+    const displayIndex = selectedBuses.length > 0
+        ? Math.min(selectedBusIndex, selectedBuses.length - 1)
+        : 0;
+
     return (
         <div className={`quiz-container fade-in ${isFadingOut ? 'fade-out' : ''}`}>
             {(selectedBuses.length > 0) && (
-                <QuizCard selectedBus={selectedBuses[selectedBusIndex]} setSelectedBusIndex={setSelectedBusIndex}
+                <QuizCard selectedBus={selectedBuses[displayIndex]} setSelectedBusIndex={setSelectedBusIndex}
                           setNumberOfGoodAnswers={setNumberOfGoodAnswers}/>
             )}
         </div>
