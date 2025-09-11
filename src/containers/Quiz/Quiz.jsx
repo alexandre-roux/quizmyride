@@ -3,7 +3,7 @@ import './Quiz.scss';
 import buses from '../../data/buses';
 import QuizCard from "../../component/QuizCard.jsx";
 
-const Quiz = ({numberOfQuestions, setDisplayQuiz, setDisplayResult}) => {
+const Quiz = ({numberOfQuestions, setDisplayQuiz, setDisplayResult, setNumberOfGoodAnswers}) => {
     const [selectedBuses, setSelectedBuses] = React.useState([]);
     const [selectedBusIndex, setSelectedBusIndex] = React.useState(0);
     const [isFadingOut, setIsFadingOut] = React.useState(false);
@@ -51,7 +51,8 @@ const Quiz = ({numberOfQuestions, setDisplayQuiz, setDisplayResult}) => {
     return (
         <div className={`quiz-container fade-in ${isFadingOut ? 'fade-out' : ''}`}>
             {(selectedBuses.length > 0) && (
-                <QuizCard selectedBus={selectedBuses[selectedBusIndex]} setSelectedBusIndex={setSelectedBusIndex}/>
+                <QuizCard selectedBus={selectedBuses[selectedBusIndex]} setSelectedBusIndex={setSelectedBusIndex}
+                          setNumberOfGoodAnswers={setNumberOfGoodAnswers}/>
             )}
         </div>
     );

@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import './QuizCard.scss';
 
-const QuizCard = ({selectedBus, setSelectedBusIndex}) => {
+const QuizCard = ({selectedBus, setSelectedBusIndex, setNumberOfGoodAnswers}) => {
     const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
 
     // Audio refs
@@ -44,6 +44,9 @@ const QuizCard = ({selectedBus, setSelectedBusIndex}) => {
         setSelectedAnswerIndex(index);
         const answer = answers[index];
         const correct = isCorrect(answer);
+        if (correct) {
+            setNumberOfGoodAnswers(prev => prev + 1);
+        }
 
         // Play corresponding sound and advance after it ends
         const toPlay = correct ? honkRef.current : crashRef.current;
