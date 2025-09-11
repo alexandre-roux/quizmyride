@@ -18,7 +18,7 @@ function App() {
             ) : displayResult ? (
                 <Result/>
             ) : (
-                <Home setDisplayQuiz={setDisplayQuiz}/>
+                <Home numberOfQuestions={numberOfQuestions} setDisplayQuiz={setDisplayQuiz}/>
             )}
         </div>
     )
