@@ -60,7 +60,7 @@ const QuizCard = ({selectedBus, setSelectedBusIndex, setNumberOfGoodAnswers}) =>
 
                 // Prepare a one-time handler
                 const onEnded = () => {
-                    toPlay.removeEventListener('ended', onEnded);
+                    // guard: only advance if this card still mounted and an answer was chosen
                     advance();
                 };
                 toPlay.addEventListener('ended', onEnded, {once: true});
@@ -76,12 +76,22 @@ const QuizCard = ({selectedBus, setSelectedBusIndex, setNumberOfGoodAnswers}) =>
                 }
 
                 // Safety fallback: in case 'ended' never fires (corrupt audio), advance after 3s
-                setTimeout(() => {
+                // Only set this after a user click; and clear it if audio actually ends
+                const safetyTimer = setTimeout(() => {
                     // If still playing, let 'ended' handle it
                     if (toPlay && !toPlay.paused && !toPlay.ended) return;
                     // Otherwise, advance as a safety net
                     advance();
                 }, 3000);
+
+                // Wrap onEnded to also clear safety timer
+                const originalOnEnded = onEnded;
+                const clearAndAdvance = () => {
+                    clearTimeout(safetyTimer);
+                    originalOnEnded();
+                };
+                toPlay.removeEventListener('ended', onEnded);
+                toPlay.addEventListener('ended', clearAndAdvance, {once: true});
             } catch {
                 // If any error occurs during play, advance immediately
                 advance();

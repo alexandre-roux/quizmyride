@@ -34,6 +34,8 @@ const Quiz = ({numberOfQuestions, setDisplayQuiz, setDisplayResult, setNumberOfG
 
         // Save the selected buses in state
         setSelectedBuses(pickedWithAnswers);
+        // Reset progress when creating a new quiz
+        setSelectedBusIndex(0);
     }, [numberOfQuestions]);
 
 
