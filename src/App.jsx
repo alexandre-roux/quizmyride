@@ -1,10 +1,15 @@
 import './App.scss'
 import Home from "./containers/Home/Home.jsx";
 import Quiz from "./containers/Quiz/Quiz.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {getAudio} from './utils/audioManager';
 import Result from "./containers/Result/Result.jsx";
 
 function App() {
+    // Preload all audio assets early to reduce playback latency
+    useEffect(() => {
+        ['gong', 'honk', 'crash', 'yay', 'sad'].forEach(getAudio);
+    }, []);
     const numberOfQuestions = 3;
     const [numberOfGoodAnswers, setNumberOfGoodAnswers] = useState(0);
 

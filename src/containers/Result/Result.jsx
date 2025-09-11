@@ -1,5 +1,6 @@
 import React from 'react';
 import './Result.scss';
+import {getAudio} from '../../utils/audioManager';
 
 const Result = ({numberOfQuestions, numberOfGoodAnswers, setDisplayResult}) => {
     const isPerfect = Number(numberOfGoodAnswers) === Number(numberOfQuestions);
@@ -8,28 +9,27 @@ const Result = ({numberOfQuestions, numberOfGoodAnswers, setDisplayResult}) => {
 
     // Play celebratory or sad sound when the result is shown
     React.useEffect(() => {
-        // Choose the sound based on result
-        const src = isPerfect ? '/sounds/yay.mp3' : '/sounds/sad-trombone.mp3';
-        const audio = new Audio(src);
+        const key = isPerfect ? 'yay' : 'sad';
+        const audio = getAudio(key);
         audioRef.current = audio;
-        // slight volume reduction to be gentle
-        audio.volume = 0.7;
-        // Try to play; ignore failures due to autoplay policies
-        const tryPlay = async () => {
-            try {
-                await audio.play();
-            } catch {
-                // Autoplay restriction or other playback error; fail silently
-                // It will still be ready to play on next user gesture.
+        if (audio) {
+            // Attempt playback; ignore policy rejections
+            const p = audio.play();
+            if (p && typeof p.catch === 'function') {
+                p.catch(() => {
+                });
             }
-        };
-        tryPlay();
-
+        }
         return () => {
-            // Cleanup when component unmounts
             if (audioRef.current) {
-                audioRef.current.pause();
-                audioRef.current.currentTime = 0;
+                try {
+                    audioRef.current.pause();
+                } catch { /* ignore */
+                }
+                try {
+                    audioRef.current.currentTime = 0;
+                } catch { /* ignore */
+                }
                 audioRef.current = null;
             }
         };

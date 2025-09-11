@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import './Home.scss';
+import {play, warmUp} from '../../utils/audioManager';
 
 const Home = ({numberOfQuestions, setDisplayQuiz, setNumberOfGoodAnswers}) => {
     const [isFadingOut, setIsFadingOut] = React.useState(false);
@@ -11,10 +12,9 @@ const Home = ({numberOfQuestions, setDisplayQuiz, setNumberOfGoodAnswers}) => {
     const onButtonClick = () => {
         // trigger fade-out animation
         setIsFadingOut(true);
-        // Play gong sound
-        const audio = new Audio('/sounds/bvg-gong.mp3');
-        audio.volume = 0.8;
-        audio.play();
+        // Warm up and play gong instantly using cached audio
+        warmUp();
+        play('gong');
 
         // Start the quiz after fade-out completes
         setTimeout(() => setDisplayQuiz(true), 300);

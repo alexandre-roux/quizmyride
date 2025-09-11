@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import './QuizCard.scss';
+import {getAudio} from '../utils/audioManager';
 
 const QuizCard = ({selectedBus, setSelectedBusIndex, setNumberOfGoodAnswers}) => {
     const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
@@ -8,21 +9,18 @@ const QuizCard = ({selectedBus, setSelectedBusIndex, setNumberOfGoodAnswers}) =>
     const honkRef = useRef();
     const crashRef = useRef();
 
-    // Initialize audio elements once
+    // Initialize and cache audio elements once via audioManager for instant playback
     useEffect(() => {
-        honkRef.current = new Audio('/sounds/honk.mp3');
-        crashRef.current = new Audio('/sounds/crash.mp3');
-
-        // Lower volume a bit to be user-friendly
-        [honkRef.current, crashRef.current].forEach(audio => {
-            if (audio) audio.volume = 0.8;
-        });
+        honkRef.current = getAudio('honk');
+        crashRef.current = getAudio('crash');
 
         return () => {
             [honkRef.current, crashRef.current].forEach(audio => {
                 if (audio) {
-                    audio.pause();
-                    audio.src = '';
+                    try {
+                        audio.pause();
+                    } catch { /* ignore */
+                    }
                 }
             });
         };
