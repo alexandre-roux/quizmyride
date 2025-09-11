@@ -6,17 +6,19 @@ import Result from "./containers/Result/Result.jsx";
 
 function App() {
     const numberOfQuestions = 3;
+    const [numberOfGoodAnswers, setNumberOfGoodAnswers] = useState(0);
 
     const [displayQuiz, setDisplayQuiz] = useState(false);
-    const [displayResult, setDisplayScore] = useState(false);
+    const [displayResult, setDisplayResult] = useState(false);
 
     return (
         <div className="main-container">
             {displayQuiz ? (
                 <Quiz numberOfQuestions={numberOfQuestions} setDisplayQuiz={setDisplayQuiz}
-                      setDisplayScore={setDisplayScore}/>
+                      setDisplayResult={setDisplayResult} setNumberOfGoodAnswers={setNumberOfGoodAnswers}/>
             ) : displayResult ? (
-                <Result/>
+                <Result numberOfQuestions={numberOfQuestions} numberOfGoodAnswers={numberOfGoodAnswers}
+                        setDisplayResult={setDisplayResult}/>
             ) : (
                 <Home numberOfQuestions={numberOfQuestions} setDisplayQuiz={setDisplayQuiz}/>
             )}
