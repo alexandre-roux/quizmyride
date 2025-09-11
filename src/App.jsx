@@ -8,13 +8,13 @@ function App() {
     const numberOfQuestions = 3;
 
     const [displayQuiz, setDisplayQuiz] = useState(false);
-    const [displayResult, setDisplayResult] = useState(false);
+    const [displayResult, setDisplayScore] = useState(false);
 
     return (
         <div className="main-container">
             {displayQuiz ? (
                 <Quiz numberOfQuestions={numberOfQuestions} setDisplayQuiz={setDisplayQuiz}
-                      setDisplayResults={setDisplayResult}/>
+                      setDisplayScore={setDisplayScore}/>
             ) : displayResult ? (
                 <Result/>
             ) : (

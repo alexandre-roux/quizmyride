@@ -3,7 +3,7 @@ import './Quiz.scss';
 import buses from '../../data/buses';
 import QuizCard from "../../component/QuizCard.jsx";
 
-const Quiz = (props) => {
+const Quiz = ({numberOfQuestions, setDisplayQuiz, setDisplayScore}) => {
     const [selectedBuses, setSelectedBuses] = React.useState([]);
     const [selectedBusIndex, setSelectedBusIndex] = React.useState(0);
     const [isFadingOut, setIsFadingOut] = React.useState(false);
@@ -12,7 +12,7 @@ const Quiz = (props) => {
         // Create the quiz when the component mounts
         // Shuffle buses and pick the requested number of questions
         const shuffled = [...buses].sort(() => Math.random() - 0.5);
-        const picked = shuffled.slice(0, props.numberOfQuestions);
+        const picked = shuffled.slice(0, numberOfQuestions);
 
         // Get all bus names
         const allNames = buses.map(b => b.model);
@@ -34,24 +34,24 @@ const Quiz = (props) => {
 
         // Save the selected buses in state
         setSelectedBuses(pickedWithAnswers);
-    }, [props.numberOfQuestions]);
+    }, [numberOfQuestions]);
 
 
     useEffect(() => {
-        if (selectedBusIndex >= props.numberOfQuestions) {
+        if (selectedBusIndex >= numberOfQuestions) {
             // Trigger fade-out before navigating to results
             setIsFadingOut(true);
             setTimeout(() => {
-                props.setDisplayQuiz(false);
-                props.setDisplayResults(true);
+                setDisplayQuiz(false);
+                setDisplayScore(true);
             }, 300);
         }
-    }, [props, selectedBusIndex]);
+    }, [numberOfQuestions, setDisplayQuiz, setDisplayScore, selectedBusIndex]);
 
     return (
         <div className={`quiz-container fade-in ${isFadingOut ? 'fade-out' : ''}`}>
             {(selectedBuses.length > 0) && (
-                <QuizCard selectedBus={selectedBuses[selectedBusIndex]}/>
+                <QuizCard selectedBus={selectedBuses[selectedBusIndex]} setSelectedBusIndex={setSelectedBusIndex}/>
             )}
         </div>
     );

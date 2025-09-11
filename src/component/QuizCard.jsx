@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import './QuizCard.scss';
 
-const QuizCard = ({selectedBus}) => {
+const QuizCard = ({selectedBus, setSelectedBusIndex}) => {
     const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
 
     // Audio refs
@@ -45,15 +45,47 @@ const QuizCard = ({selectedBus}) => {
         const answer = answers[index];
         const correct = isCorrect(answer);
 
-        // Play corresponding sound
+        // Play corresponding sound and advance after it ends
         const toPlay = correct ? honkRef.current : crashRef.current;
+
+        const advance = () => setSelectedBusIndex(prev => prev + 1);
+
         if (toPlay) {
             try {
+                // Ensure from start
                 toPlay.currentTime = 0;
-                void toPlay.play(); // browsers require user gesture → ok (inside click)
+
+                // Prepare a one-time handler
+                const onEnded = () => {
+                    toPlay.removeEventListener('ended', onEnded);
+                    advance();
+                };
+                toPlay.addEventListener('ended', onEnded, {once: true});
+
+                const playPromise = toPlay.play(); // user gesture context
+                // If play() returns a promise, handle rejection and set a fallback
+                if (playPromise && typeof playPromise.catch === 'function') {
+                    playPromise.catch(() => {
+                        // If playback failed (e.g., autoplay policies), fallback to quick advance
+                        toPlay.removeEventListener('ended', onEnded);
+                        advance();
+                    });
+                }
+
+                // Safety fallback: in case 'ended' never fires (corrupt audio), advance after 3s
+                setTimeout(() => {
+                    // If still playing, let 'ended' handle it
+                    if (toPlay && !toPlay.paused && !toPlay.ended) return;
+                    // Otherwise, advance as a safety net
+                    advance();
+                }, 3000);
             } catch {
-                // ignore play errors
+                // If any error occurs during play, advance immediately
+                advance();
             }
+        } else {
+            // No audio available; advance immediately
+            advance();
         }
     };
 
