@@ -20,7 +20,8 @@ function App() {
                 <Result numberOfQuestions={numberOfQuestions} numberOfGoodAnswers={numberOfGoodAnswers}
                         setDisplayResult={setDisplayResult}/>
             ) : (
-                <Home numberOfQuestions={numberOfQuestions} setDisplayQuiz={setDisplayQuiz}/>
+                <Home numberOfQuestions={numberOfQuestions} setDisplayQuiz={setDisplayQuiz}
+                      setNumberOfGoodAnswers={setNumberOfGoodAnswers}/>
             )}
         </div>
     )

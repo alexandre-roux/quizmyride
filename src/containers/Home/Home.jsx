@@ -1,8 +1,13 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './Home.scss';
 
-const Home = ({numberOfQuestions, setDisplayQuiz}) => {
+const Home = ({numberOfQuestions, setDisplayQuiz, setNumberOfGoodAnswers}) => {
     const [isFadingOut, setIsFadingOut] = React.useState(false);
+
+    useEffect(() => {
+        setNumberOfGoodAnswers(0)
+    }, [setNumberOfGoodAnswers])
+
     const onButtonClick = () => {
         // trigger fade-out animation
         setIsFadingOut(true);
