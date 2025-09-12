@@ -1,0 +1,41 @@
+.quiz-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    max-width: 1200px; /* constrain overall card width on large screens */
+    margin: 0 auto;
+
+    h2 {
+        margin-top: 0;
+    }
+
+    img {
+        height: 50vh;
+        width: 100%; /* make image fill the card width */
+        max-width: 800px; /* shared visual width for both image and answers */
+        object-fit: cover;
+    }
+
+    .answers {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        width: 100%;
+        max-width: 800px; /* match image width so two-button row equals image width */
+        margin-top: 16px;
+
+        /* Layout-only adjustments for buttons; visual styles come from global index.css */
+        button {
+            width: 100%;
+            min-height: 56px; /* ensure ample hit area while letting global styles define look */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            word-break: break-word;
+            white-space: normal;
+        }
+    }
+}

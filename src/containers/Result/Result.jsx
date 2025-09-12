@@ -1,5 +1,5 @@
 import React from 'react';
-import './Result.scss';
+import styles from './Result.module.scss';
 import {getAudio} from '../../utils/audioManager';
 import ResultMessage from '../../components/ResultMessage.jsx';
 
@@ -49,7 +49,7 @@ const Result = ({numberOfQuestions, numberOfGoodAnswers, setDisplayResult}) => {
     };
 
     return (
-        <div className={`result-container fade-in ${isFadingOut ? 'fade-out' : ''}`}>
+        <div className={`${styles['result-container']} ${styles['fade-in']} ${isFadingOut ? styles['fade-out'] : ''}`}>
             <ResultMessage
                 isPerfect={isPerfect}
                 numberOfGoodAnswers={numberOfGoodAnswers}

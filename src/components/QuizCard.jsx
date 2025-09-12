@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import './QuizCard.scss';
+import styles from './QuizCard.module.scss';
 import {getAudio} from '../utils/audioManager';
 import AnswerOptions from './AnswerOptions.jsx';
 
@@ -102,12 +102,13 @@ const QuizCard = ({selectedBus, setSelectedBusIndex, setNumberOfGoodAnswers}) =>
     };
 
     return (
-        <div className="quiz-card">
+        <div className={styles['quiz-card']}>
             <h2>What model is it?</h2>
             {selectedBus && (
                 <>
                     <img src={selectedBus.image} alt={selectedBus.model}/>
                     <AnswerOptions
+                        className={styles.answers}
                         answers={answers}
                         selectedIndex={selectedAnswerIndex}
                         correctAnswer={selectedBus.model}

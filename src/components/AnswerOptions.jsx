@@ -4,12 +4,12 @@ import React from 'react';
  * Renders a list of up to 4 answer buttons with feedback styling.
  * Delegates selection handling to parent via onSelect.
  */
-const AnswerOptions = ({answers = [], selectedIndex = null, correctAnswer, onSelect}) => {
+const AnswerOptions = ({answers = [], selectedIndex = null, correctAnswer, onSelect, className}) => {
     const isCorrect = (answer) => answer === correctAnswer;
     const anyChosen = selectedIndex !== null;
 
     return (
-        <div className="answers">
+        <div className={className ?? 'answers'}>
             {answers.slice(0, 4).map((answer, idx) => {
                 const chosen = selectedIndex === idx;
                 const correctForThisButton = isCorrect(answer);
