@@ -27,13 +27,9 @@ let warmedUp = false;
 
 function createAudio(src, volume = 0.8) {
     const audio = new Audio(src);
-    audio.preload = 'auto';
+    // Prefer lazy loading to improve initial load: let the browser fetch when play() is called or when warmed up
+    audio.preload = 'none';
     audio.volume = volume;
-    // Hint the browser to fetch and decode early
-    try {
-        audio.load();
-    } catch { /* ignore */
-    }
     return audio;
 }
 

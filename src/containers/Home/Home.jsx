@@ -22,7 +22,7 @@ const Home = ({numberOfQuestions, setDisplayQuiz, setNumberOfGoodAnswers}) => {
 
     return (<div className={`home-container fade-in ${isFadingOut ? 'fade-out' : ''}`}>
         <h1>Welcome to Quiz My Ride!</h1>
-        <img src="/images/logo.png" className="logo" alt="Quiz My Ride Logo"/>
+        <img src="/images/logo.png" className="logo" alt="Quiz My Ride Logo" loading="lazy"/>
         <p className="intro-text">
             Think you know the BVG bus fleet like the back of your Fahrkarte?<br/>
             Can you tell a Citaro from a Citea faster than a bus at a green light?

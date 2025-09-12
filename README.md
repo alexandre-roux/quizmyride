@@ -84,7 +84,8 @@ Example tests live under `src/components/__tests__/`.
 
 ## Notes
 
-- Audio is preloaded on app mount to minimize latency when playing feedback sounds.
+- Audio and images are lazy-loaded to improve initial load times. Sounds are warmed up on first user interaction to
+  minimize latency before playback.
 - The default number of questions is currently set in `src/App.jsx`.
 
 ## Contributing

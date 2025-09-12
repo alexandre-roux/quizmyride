@@ -106,7 +106,7 @@ const QuizCard = ({selectedBus, setSelectedBusIndex, setNumberOfGoodAnswers}) =>
             <h2>What model is it?</h2>
             {selectedBus && (
                 <>
-                    <img src={selectedBus.image} alt={selectedBus.model}/>
+                    <img src={selectedBus.image} alt={selectedBus.model} loading="lazy"/>
                     <AnswerOptions
                         className={styles.answers}
                         answers={answers}
