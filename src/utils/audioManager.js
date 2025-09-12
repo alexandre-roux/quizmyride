@@ -55,11 +55,17 @@ export function play(key, {fromStart = true} = {}) {
     const p = audio.play();
     if (p && typeof p.catch === 'function') {
         return p.catch((err) => {
-            // Log playback errors instead of silently ignoring
+            // Log playback errors instead of silently ignoring and notify UI
+            const detail = {key, src: audio && audio.src, errorMessage: err && (err.message || String(err))};
             try {
-                console.warn('[audioManager] Failed to play sound', {key, src: audio && audio.src, error: err});
-            } catch {
-                // fallback in case console object is not available
+                console.warn('[audioManager] Failed to play sound', detail);
+            } catch { /* ignore */
+            }
+            try {
+                if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
+                    window.dispatchEvent(new CustomEvent('audio-error', {detail}));
+                }
+            } catch { /* ignore */
             }
         });
     }
@@ -92,8 +98,15 @@ export function warmUp() {
             return pr.then(() => {
                 stop();
             }).catch((err) => {
+                const detail = {key: 'gong', src: a && a.src, errorMessage: err && (err.message || String(err))};
                 try {
-                    console.warn('[audioManager] Warm-up play failed', {key: 'gong', src: a && a.src, error: err});
+                    console.warn('[audioManager] Warm-up play failed', detail);
+                } catch { /* ignore */
+                }
+                try {
+                    if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
+                        window.dispatchEvent(new CustomEvent('audio-error', {detail}));
+                    }
                 } catch { /* ignore */
                 }
                 stop();

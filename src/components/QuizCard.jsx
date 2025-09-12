@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
+import PropTypes from '../shims/prop-types';
 import styles from './QuizCard.module.scss';
 import {getAudio} from '../utils/audioManager';
 import AnswerOptions from './AnswerOptions.jsx';
@@ -118,6 +119,16 @@ const QuizCard = ({selectedBus, setSelectedBusIndex, setNumberOfGoodAnswers}) =>
             )}
         </div>
     );
+};
+
+QuizCard.propTypes = {
+    selectedBus: PropTypes.shape({
+        model: PropTypes.string,
+        image: PropTypes.string,
+        answers: PropTypes.arrayOf(PropTypes.string),
+    }),
+    setSelectedBusIndex: PropTypes.func.isRequired,
+    setNumberOfGoodAnswers: PropTypes.func.isRequired,
 };
 
 export default QuizCard;

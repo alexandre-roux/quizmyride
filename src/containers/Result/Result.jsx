@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from '../../shims/prop-types';
 import styles from './Result.module.scss';
 import {getAudio} from '../../utils/audioManager';
 import ResultMessage from '../../components/ResultMessage.jsx';
@@ -61,6 +62,12 @@ const Result = ({numberOfQuestions, numberOfGoodAnswers, setDisplayResult}) => {
             </button>
         </div>
     );
+};
+
+Result.propTypes = {
+    numberOfQuestions: PropTypes.number.isRequired,
+    numberOfGoodAnswers: PropTypes.number.isRequired,
+    setDisplayResult: PropTypes.func.isRequired,
 };
 
 export default Result;
