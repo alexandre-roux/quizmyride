@@ -4,12 +4,22 @@
 // - Setting preload to 'auto' and calling load()
 // - Optionally warming up on first user interaction to bypass autoplay restrictions
 
-const sounds = {
-    yay: '/sounds/yay.mp3',
-    sad: '/sounds/sad-trombone.mp3',
-    honk: '/sounds/honk.mp3',
-    crash: '/sounds/crash.mp3',
-    gong: '/sounds/bvg-gong.mp3',
+// Resolve asset paths against Vite's base URL so production builds work from subpaths
+const baseUrl = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.BASE_URL) ? import.meta.env.BASE_URL : '/';
+const assetPath = (p) => {
+    const clean = String(p).replace(/^\/+/, '');
+    if (!baseUrl) return `/${clean}`;
+    if (baseUrl.endsWith('/')) return `${baseUrl}${clean}`;
+    return `${baseUrl}/${clean}`;
+};
+
+// Relative paths under public/ so they are copied as-is by Vite
+const soundsRel = {
+    yay: 'sounds/yay.mp3',
+    sad: 'sounds/sad-trombone.mp3',
+    honk: 'sounds/honk.mp3',
+    crash: 'sounds/crash.mp3',
+    gong: 'sounds/bvg-gong.mp3',
 };
 
 const cache = {};
@@ -28,8 +38,9 @@ function createAudio(src, volume = 0.8) {
 }
 
 export function getAudio(key) {
-    const src = sounds[key];
-    if (!src) return null;
+    const rel = soundsRel[key];
+    if (!rel) return null;
+    const src = assetPath(rel);
     if (!cache[key]) {
         cache[key] = createAudio(src);
     }
