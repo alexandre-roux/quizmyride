@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
-import './Home.scss';
+import PropTypes from '../../shims/prop-types';
+import styles from './Home.module.scss';
 import {play, warmUp} from '../../utils/audioManager';
 
 const Home = ({numberOfQuestions, setDisplayQuiz, setNumberOfGoodAnswers}) => {
@@ -9,21 +10,26 @@ const Home = ({numberOfQuestions, setDisplayQuiz, setNumberOfGoodAnswers}) => {
         setNumberOfGoodAnswers(0)
     }, [setNumberOfGoodAnswers])
 
-    const onButtonClick = () => {
+    const onButtonClick = async () => {
         // trigger fade-out animation
         setIsFadingOut(true);
-        // Warm up and play gong instantly using cached audio
-        warmUp();
-        play('gong');
+        // Ensure audio is unlocked before playing the gong on first click
+        try {
+            await warmUp();
+        } catch { /* ignore */
+        }
+        void play('gong');
 
         // Start the quiz after fade-out completes
         setTimeout(() => setDisplayQuiz(true), 300);
     };
 
-    return (<div className={`home-container fade-in ${isFadingOut ? 'fade-out' : ''}`}>
+    return (
+        <div className={`${styles['home-container']} ${styles['fade-in']} ${isFadingOut ? styles['fade-out'] : ''}`}>
         <h1>Welcome to Quiz My Ride!</h1>
-        <img src="/images/logo.png" className="logo" alt="Quiz My Ride Logo"/>
-        <p className="intro-text">
+            <img src={`${import.meta.env.BASE_URL}images/logo.png`} className={styles.logo} alt="Quiz My Ride Logo"
+                 loading="lazy"/>
+            <p className={styles['intro-text']}>
             Think you know the BVG bus fleet like the back of your Fahrkarte?<br/>
             Can you tell a Citaro from a Citea faster than a bus at a green light?
             <br/>
@@ -39,6 +45,12 @@ const Home = ({numberOfQuestions, setDisplayQuiz, setNumberOfGoodAnswers}) => {
             Start the quiz
         </button>
     </div>);
+};
+
+Home.propTypes = {
+    numberOfQuestions: PropTypes.number.isRequired,
+    setDisplayQuiz: PropTypes.func.isRequired,
+    setNumberOfGoodAnswers: PropTypes.func.isRequired,
 };
 
 export default Home;

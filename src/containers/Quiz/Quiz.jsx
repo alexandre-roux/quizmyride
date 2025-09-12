@@ -1,7 +1,8 @@
 import React, {useEffect} from 'react';
-import './Quiz.scss';
+import PropTypes from '../../shims/prop-types';
+import styles from './Quiz.module.scss';
 import buses from '../../data/buses';
-import QuizCard from "../../component/QuizCard.jsx";
+import QuizCard from "../../components/QuizCard.jsx";
 
 const Quiz = ({numberOfQuestions, setDisplayQuiz, setDisplayResult, setNumberOfGoodAnswers}) => {
     const [selectedBuses, setSelectedBuses] = React.useState([]);
@@ -9,7 +10,7 @@ const Quiz = ({numberOfQuestions, setDisplayQuiz, setDisplayResult, setNumberOfG
     const [isFadingOut, setIsFadingOut] = React.useState(false);
 
     useEffect(() => {
-        // Create the quiz when the component mounts
+        // Create the quiz when the components mounts
         // Shuffle buses and pick the requested number of questions
         const shuffled = [...buses].sort(() => Math.random() - 0.5);
         const picked = shuffled.slice(0, numberOfQuestions);
@@ -56,13 +57,20 @@ const Quiz = ({numberOfQuestions, setDisplayQuiz, setDisplayResult, setNumberOfG
         : 0;
 
     return (
-        <div className={`quiz-container fade-in ${isFadingOut ? 'fade-out' : ''}`}>
+        <div className={`${styles['quiz-container']} ${styles['fade-in']} ${isFadingOut ? styles['fade-out'] : ''}`}>
             {(selectedBuses.length > 0) && (
                 <QuizCard selectedBus={selectedBuses[displayIndex]} setSelectedBusIndex={setSelectedBusIndex}
                           setNumberOfGoodAnswers={setNumberOfGoodAnswers}/>
             )}
         </div>
     );
+};
+
+Quiz.propTypes = {
+    numberOfQuestions: PropTypes.number.isRequired,
+    setDisplayQuiz: PropTypes.func.isRequired,
+    setDisplayResult: PropTypes.func.isRequired,
+    setNumberOfGoodAnswers: PropTypes.func.isRequired,
 };
 
 export default Quiz;

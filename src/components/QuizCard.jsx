@@ -1,6 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react';
-import './QuizCard.scss';
+import PropTypes from '../shims/prop-types';
+import styles from './QuizCard.module.scss';
 import {getAudio} from '../utils/audioManager';
+import AnswerOptions from './AnswerOptions.jsx';
 
 const QuizCard = ({selectedBus, setSelectedBusIndex, setNumberOfGoodAnswers}) => {
     const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
@@ -101,51 +103,32 @@ const QuizCard = ({selectedBus, setSelectedBusIndex, setNumberOfGoodAnswers}) =>
     };
 
     return (
-        <div className="quiz-card">
+        <div className={styles['quiz-card']}>
             <h2>What model is it?</h2>
             {selectedBus && (
                 <>
-                    <img src={selectedBus.image} alt={selectedBus.model}/>
-                    <div className="answers">
-                        {answers.slice(0, 4).map((answer, idx) => {
-                            const chosen = selectedAnswerIndex === idx;
-                            const anyChosen = selectedAnswerIndex !== null;
-                            const correctForThisButton = isCorrect(answer);
-                            // When a bad answer is selected, also highlight the correct one in green
-                            let style;
-                            if (anyChosen) {
-                                if (chosen) {
-                                    style = {
-                                        backgroundColor: correctForThisButton ? '#2ecc71' : '#e74c3c',
-                                        borderColor: 'black',
-                                        color: 'white',
-                                    };
-                                } else if (!chosen && !isCorrect(answers[selectedAnswerIndex]) && correctForThisButton) {
-                                    // user chose wrong; show the correct answer
-                                    style = {
-                                        backgroundColor: '#2ecc71',
-                                        borderColor: 'black',
-                                        color: 'white',
-                                    };
-                                }
-                            }
-
-                            return (
-                                <button
-                                    key={idx}
-                                    type="button"
-                                    onClick={() => handleClick(idx)}
-                                    style={style}
-                                >
-                                    {answer}
-                                </button>
-                            );
-                        })}
-                    </div>
+                    <img src={selectedBus.image} alt={selectedBus.model} loading="lazy"/>
+                    <AnswerOptions
+                        className={styles.answers}
+                        answers={answers}
+                        selectedIndex={selectedAnswerIndex}
+                        correctAnswer={selectedBus.model}
+                        onSelect={handleClick}
+                    />
                 </>
             )}
         </div>
     );
+};
+
+QuizCard.propTypes = {
+    selectedBus: PropTypes.shape({
+        model: PropTypes.string,
+        image: PropTypes.string,
+        answers: PropTypes.arrayOf(PropTypes.string),
+    }),
+    setSelectedBusIndex: PropTypes.func.isRequired,
+    setNumberOfGoodAnswers: PropTypes.func.isRequired,
 };
 
 export default QuizCard;

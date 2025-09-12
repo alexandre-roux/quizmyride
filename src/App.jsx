@@ -1,15 +1,11 @@
-import './App.scss'
+import styles from './App.module.scss'
 import Home from "./containers/Home/Home.jsx";
 import Quiz from "./containers/Quiz/Quiz.jsx";
-import {useEffect, useState} from "react";
-import {getAudio} from './utils/audioManager';
+import {useState} from "react";
 import Result from "./containers/Result/Result.jsx";
 
 function App() {
-    // Preload all audio assets early to reduce playback latency
-    useEffect(() => {
-        ['gong', 'honk', 'crash', 'yay', 'sad'].forEach(getAudio);
-    }, []);
+    // Lazy-load sounds: no eager preloading here to improve initial load time
     const numberOfQuestions = 3;
     const [numberOfGoodAnswers, setNumberOfGoodAnswers] = useState(0);
 
@@ -17,7 +13,7 @@ function App() {
     const [displayResult, setDisplayResult] = useState(false);
 
     return (
-        <div className="main-container">
+        <div className={styles['main-container']}>
             {displayQuiz ? (
                 <Quiz numberOfQuestions={numberOfQuestions} setDisplayQuiz={setDisplayQuiz}
                       setDisplayResult={setDisplayResult} setNumberOfGoodAnswers={setNumberOfGoodAnswers}/>
