@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import './Quiz.scss';
 import buses from '../../data/buses';
-import QuizCard from "../../component/QuizCard.jsx";
+import QuizCard from "../../components/QuizCard.jsx";
 
 const Quiz = ({numberOfQuestions, setDisplayQuiz, setDisplayResult, setNumberOfGoodAnswers}) => {
     const [selectedBuses, setSelectedBuses] = React.useState([]);
@@ -9,7 +9,7 @@ const Quiz = ({numberOfQuestions, setDisplayQuiz, setDisplayResult, setNumberOfG
     const [isFadingOut, setIsFadingOut] = React.useState(false);
 
     useEffect(() => {
-        // Create the quiz when the component mounts
+        // Create the quiz when the components mounts
         // Shuffle buses and pick the requested number of questions
         const shuffled = [...buses].sort(() => Math.random() - 0.5);
         const picked = shuffled.slice(0, numberOfQuestions);
