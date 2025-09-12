@@ -1,52 +1,149 @@
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './QuizCard.scss';
+import {getAudio} from '../utils/audioManager';
 
-const QuizCard = (props) => {
-    const [chosenIndex, setChosenIndex] = React.useState(null);
+const QuizCard = ({selectedBus, setSelectedBusIndex, setNumberOfGoodAnswers}) => {
+    const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
 
-    // reset choice when selected bus changes
-    React.useEffect(() => {
-        setChosenIndex(null);
-    }, [props.selectedBus]);
+    // Audio refs
+    const honkRef = useRef();
+    const crashRef = useRef();
 
-    const answers = props.selectedBus && Array.isArray(props.selectedBus.answers)
-        ? props.selectedBus.answers
-        : [];
+    // Initialize and cache audio elements once via audioManager for instant playback
+    useEffect(() => {
+        honkRef.current = getAudio('honk');
+        crashRef.current = getAudio('crash');
 
-    const handleClick = (idx) => {
-        if (chosenIndex !== null) return; // prevent changing after first choice in this view
-        setChosenIndex(idx);
+        return () => {
+            [honkRef.current, crashRef.current].forEach(audio => {
+                if (audio) {
+                    try {
+                        audio.pause();
+                    } catch { /* ignore */
+                    }
+                }
+            });
+        };
+    }, []);
+
+    // Reset choice when selected bus changes
+    useEffect(() => {
+        setSelectedAnswerIndex(null);
+    }, [selectedBus]);
+
+    // Safely extract answers
+    const answers = selectedBus?.answers ?? [];
+
+    const isCorrect = (answer) => answer === selectedBus?.model;
+
+    const handleClick = (index) => {
+        if (selectedAnswerIndex !== null) return; // lock after first choice
+
+        setSelectedAnswerIndex(index);
+        const answer = answers[index];
+        const correct = isCorrect(answer);
+        if (correct) {
+            setNumberOfGoodAnswers(prev => prev + 1);
+        }
+
+        // Play corresponding sound and advance after it ends
+        const toPlay = correct ? honkRef.current : crashRef.current;
+
+        const advance = () => setSelectedBusIndex(prev => prev + 1);
+
+        if (toPlay) {
+            try {
+                // Ensure from start
+                toPlay.currentTime = 0;
+
+                // Prepare a one-time handler
+                const onEnded = () => {
+                    // guard: only advance if this card still mounted and an answer was chosen
+                    advance();
+                };
+                toPlay.addEventListener('ended', onEnded, {once: true});
+
+                const playPromise = toPlay.play(); // user gesture context
+                // If play() returns a promise, handle rejection and set a fallback
+                if (playPromise && typeof playPromise.catch === 'function') {
+                    playPromise.catch(() => {
+                        // If playback failed (e.g., autoplay policies), fallback to quick advance
+                        toPlay.removeEventListener('ended', onEnded);
+                        advance();
+                    });
+                }
+
+                // Safety fallback: in case 'ended' never fires (corrupt audio), advance after 3s
+                // Only set this after a user click; and clear it if audio actually ends
+                const safetyTimer = setTimeout(() => {
+                    // If still playing, let 'ended' handle it
+                    if (toPlay && !toPlay.paused && !toPlay.ended) return;
+                    // Otherwise, advance as a safety net
+                    advance();
+                }, 3000);
+
+                // Wrap onEnded to also clear safety timer
+                const originalOnEnded = onEnded;
+                const clearAndAdvance = () => {
+                    clearTimeout(safetyTimer);
+                    originalOnEnded();
+                };
+                toPlay.removeEventListener('ended', onEnded);
+                toPlay.addEventListener('ended', clearAndAdvance, {once: true});
+            } catch {
+                // If any error occurs during play, advance immediately
+                advance();
+            }
+        } else {
+            // No audio available; advance immediately
+            advance();
+        }
     };
-
-    const isCorrect = (answer) => props.selectedBus && answer === props.selectedBus.model;
 
     return (
         <div className="quiz-card">
             <h2>What model is it?</h2>
-            <img src={props.selectedBus.image} alt={props.selectedBus.model}/>
-            <div className="answers">
-                {answers.slice(0, 4).map((answer, idx) => {
-                    const chosen = chosenIndex === idx;
-                    const showResult = chosenIndex !== null && chosen;
-                    const style = showResult
-                        ? {
-                            backgroundColor: isCorrect(answer) ? '#2ecc71' : '#e74c3c',
-                            borderColor: 'black',
-                            color: 'white'
-                        }
-                        : undefined;
-                    return (
-                        <button
-                            key={idx}
-                            type="button"
-                            onClick={() => handleClick(idx)}
-                            style={style}
-                        >
-                            {answer}
-                        </button>
-                    );
-                })}
-            </div>
+            {selectedBus && (
+                <>
+                    <img src={selectedBus.image} alt={selectedBus.model}/>
+                    <div className="answers">
+                        {answers.slice(0, 4).map((answer, idx) => {
+                            const chosen = selectedAnswerIndex === idx;
+                            const anyChosen = selectedAnswerIndex !== null;
+                            const correctForThisButton = isCorrect(answer);
+                            // When a bad answer is selected, also highlight the correct one in green
+                            let style;
+                            if (anyChosen) {
+                                if (chosen) {
+                                    style = {
+                                        backgroundColor: correctForThisButton ? '#2ecc71' : '#e74c3c',
+                                        borderColor: 'black',
+                                        color: 'white',
+                                    };
+                                } else if (!chosen && !isCorrect(answers[selectedAnswerIndex]) && correctForThisButton) {
+                                    // user chose wrong; show the correct answer
+                                    style = {
+                                        backgroundColor: '#2ecc71',
+                                        borderColor: 'black',
+                                        color: 'white',
+                                    };
+                                }
+                            }
+
+                            return (
+                                <button
+                                    key={idx}
+                                    type="button"
+                                    onClick={() => handleClick(idx)}
+                                    style={style}
+                                >
+                                    {answer}
+                                </button>
+                            );
+                        })}
+                    </div>
+                </>
+            )}
         </div>
     );
 };

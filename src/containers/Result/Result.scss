@@ -1,19 +1,41 @@
-.home-container {
+.result-container {
+    opacity: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
 
-    h1 {
+    h2 {
         margin-top: 0;
     }
+}
 
-    .logo {
-        height: 30vh;
-        width: 30vh;
+.fade-in {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+.fade-out {
+    animation: fadeOut 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
     }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
-    .intro-text {
-        font-size: 2.4vh;
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(6px);
     }
 }

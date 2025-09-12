@@ -3,15 +3,16 @@ import './Quiz.scss';
 import buses from '../../data/buses';
 import QuizCard from "../../component/QuizCard.jsx";
 
-const Quiz = (props) => {
+const Quiz = ({numberOfQuestions, setDisplayQuiz, setDisplayResult, setNumberOfGoodAnswers}) => {
     const [selectedBuses, setSelectedBuses] = React.useState([]);
     const [selectedBusIndex, setSelectedBusIndex] = React.useState(0);
+    const [isFadingOut, setIsFadingOut] = React.useState(false);
 
     useEffect(() => {
         // Create the quiz when the component mounts
         // Shuffle buses and pick the requested number of questions
         const shuffled = [...buses].sort(() => Math.random() - 0.5);
-        const picked = shuffled.slice(0, props.numberOfQuestions);
+        const picked = shuffled.slice(0, numberOfQuestions);
 
         // Get all bus names
         const allNames = buses.map(b => b.model);
@@ -33,20 +34,32 @@ const Quiz = (props) => {
 
         // Save the selected buses in state
         setSelectedBuses(pickedWithAnswers);
-    }, [props.numberOfQuestions]);
+        // Reset progress when creating a new quiz
+        setSelectedBusIndex(0);
+    }, [numberOfQuestions]);
 
 
     useEffect(() => {
-        if (selectedBusIndex >= props.numberOfQuestions) {
-            props.setDisplayQuiz(false);
-            props.setDisplayResults(true);
+        if (selectedBusIndex >= numberOfQuestions) {
+            // Trigger fade-out before navigating to results
+            setIsFadingOut(true);
+            setTimeout(() => {
+                setDisplayQuiz(false);
+                setDisplayResult(true);
+            }, 300);
         }
-    }, [props, selectedBusIndex]);
+    }, [numberOfQuestions, setDisplayQuiz, setDisplayResult, selectedBusIndex]);
+
+    // Use a safe index to keep the last question visible during fade-out
+    const displayIndex = selectedBuses.length > 0
+        ? Math.min(selectedBusIndex, selectedBuses.length - 1)
+        : 0;
 
     return (
-        <div className="quiz-container">
+        <div className={`quiz-container fade-in ${isFadingOut ? 'fade-out' : ''}`}>
             {(selectedBuses.length > 0) && (
-                <QuizCard selectedBus={selectedBuses[selectedBusIndex]}/>
+                <QuizCard selectedBus={selectedBuses[displayIndex]} setSelectedBusIndex={setSelectedBusIndex}
+                          setNumberOfGoodAnswers={setNumberOfGoodAnswers}/>
             )}
         </div>
     );

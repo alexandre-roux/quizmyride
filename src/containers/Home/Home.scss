@@ -1,4 +1,6 @@
 .home-container {
+    transition: opacity 0.3s ease;
+    opacity: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,6 +16,26 @@
     }
 
     .intro-text {
+        transition: opacity 0.3s ease;
         font-size: 2.4vh;
     }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-out {
+    opacity: 0;
 }
