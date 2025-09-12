@@ -68,37 +68,41 @@ export function play(key, {fromStart = true} = {}) {
 
 // Call this once on a user gesture to unlock playback on mobile and warm cache
 export function warmUp() {
-    if (warmedUp) return;
+    if (warmedUp) return Promise.resolve();
     warmedUp = true;
-    // Play and immediately pause to unlock; do it quietly
-    ['gong', 'honk', 'crash', 'yay', 'sad'].forEach((k) => {
-        const a = getAudio(k);
-        if (!a) return;
-        try {
-            a.muted = true;
-            a.currentTime = 0;
-            const pr = a.play();
-            const stop = () => {
+
+    // Unlock audio by playing a muted sound in response to a user gesture,
+    // then pausing it and unmuting for subsequent real playback.
+    // We only need to unlock once; use the gong asset for this purpose.
+    const a = getAudio('gong');
+    if (!a) return Promise.resolve();
+
+    try {
+        a.muted = true;
+        a.currentTime = 0;
+        const pr = a.play();
+        const stop = () => {
+            try {
+                a.pause();
+            } catch { /* ignore */
+            }
+            a.muted = false;
+        };
+        if (pr && typeof pr.then === 'function') {
+            return pr.then(() => {
+                stop();
+            }).catch((err) => {
                 try {
-                    a.pause();
+                    console.warn('[audioManager] Warm-up play failed', {key: 'gong', src: a && a.src, error: err});
                 } catch { /* ignore */
                 }
-                a.muted = false;
-            };
-            if (pr && typeof pr.then === 'function') {
-                pr.then(stop).catch((err) => {
-                    // Log warm-up playback errors
-                    try {
-                        console.warn('[audioManager] Warm-up play failed', {key: k, src: a && a.src, error: err});
-                    } catch {
-                        // ignore logging failures
-                    }
-                    stop();
-                });
-            } else {
                 stop();
-            }
-        } catch { /* ignore */
+            });
         }
-    });
+        // Fallback for browsers returning no promise
+        stop();
+        return Promise.resolve();
+    } catch {
+        return Promise.resolve();
+    }
 }

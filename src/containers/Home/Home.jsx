@@ -9,12 +9,15 @@ const Home = ({numberOfQuestions, setDisplayQuiz, setNumberOfGoodAnswers}) => {
         setNumberOfGoodAnswers(0)
     }, [setNumberOfGoodAnswers])
 
-    const onButtonClick = () => {
+    const onButtonClick = async () => {
         // trigger fade-out animation
         setIsFadingOut(true);
-        // Warm up and play gong instantly using cached audio
-        warmUp();
-        play('gong');
+        // Ensure audio is unlocked before playing the gong on first click
+        try {
+            await warmUp();
+        } catch { /* ignore */
+        }
+        void play('gong');
 
         // Start the quiz after fade-out completes
         setTimeout(() => setDisplayQuiz(true), 300);
