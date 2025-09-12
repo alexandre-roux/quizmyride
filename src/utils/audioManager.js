@@ -58,7 +58,13 @@ export function play(key, {fromStart = true} = {}) {
     }
     const p = audio.play();
     if (p && typeof p.catch === 'function') {
-        return p.catch(() => {
+        return p.catch((err) => {
+            // Log playback errors instead of silently ignoring
+            try {
+                console.warn('[audioManager] Failed to play sound', {key, src: audio && audio.src, error: err});
+            } catch {
+                // fallback in case console object is not available
+            }
         });
     }
     return Promise.resolve();
@@ -84,7 +90,15 @@ export function warmUp() {
                 a.muted = false;
             };
             if (pr && typeof pr.then === 'function') {
-                pr.then(stop).catch(stop);
+                pr.then(stop).catch((err) => {
+                    // Log warm-up playback errors
+                    try {
+                        console.warn('[audioManager] Warm-up play failed', {key: k, src: a && a.src, error: err});
+                    } catch {
+                        // ignore logging failures
+                    }
+                    stop();
+                });
             } else {
                 stop();
             }
