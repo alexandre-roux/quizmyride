@@ -138,22 +138,66 @@ img, svg, video, canvas {
 }
 
 @media (max-width: 480px) {
-    /* Ensure the body uses the full viewport with a fixed margin on all sides */
-    body {
-        margin: 5px;
-        min-height: calc(100svh - 10px);
-    }
-
     h1 {
-        font-size: 3.8vh;
+        font-size: 4.2vh;
     }
 
     h2 {
-        font-size: 3vh;
+        font-size: 3.2vh;
     }
 
     button {
-        font-size: 0.95rem;
+        font-size: 1rem;
         padding: 0.5em 0.9em;
     }
+}
+
+/* Fullscreen and root fixes */
+:root {
+    font-family: 'Transit Bold', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    color: black;
+
+    color-scheme: light dark;
+    background-color: #242424;
+    --traffic-yellow: #F0CA00;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure true fullscreen on mobile browsers */
+html, body {
+    height: 100%;
+}
+
+#root {
+    min-height: 100%;
+}
+
+/* Fallback 100vh first, then override with modern dynamic viewport units */
+body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    min-height: 100svh;
+}
+
+/* Root styles via html selector to ensure proper application on all browsers */
+html {
+    font-family: 'Transit Bold', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    color: black;
+
+    color-scheme: light dark;
+    background-color: #242424;
+    --traffic-yellow: #F0CA00;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }

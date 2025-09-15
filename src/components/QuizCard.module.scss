@@ -70,13 +70,10 @@
 
     @media (max-width: 480px) {
         .media img {
-            max-height: 38vh;
-        }
-        .media .answers {
-            gap: 0.5rem;
+            max-height: 42vh;
         }
         .media .answers button {
-            min-height: 2.1rem;
+            min-height: 2.25rem;
         }
     }
 
