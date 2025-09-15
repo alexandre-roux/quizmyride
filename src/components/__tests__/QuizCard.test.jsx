@@ -1,13 +1,13 @@
 import {render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import QuizCard from '../QuizCard.jsx';
+import QuizCard from '../QuizCard';
 import {describe, expect, it, vi} from 'vitest';
 
 // Mock the CSS module import to a plain object
 vi.mock('../QuizCard.module.scss', () => ({default: {'quiz-card': 'quiz-card', answers: 'answers'}}), {virtual: true});
 
 // Mock audioManager.getAudio to provide a controllable audio stub
-vi.mock('../../utils/audioManager.js', () => {
+vi.mock('../../utils/audioManager', () => {
     class AudioStub extends EventTarget {
         constructor() {
             super();
