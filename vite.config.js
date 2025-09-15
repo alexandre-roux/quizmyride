@@ -10,10 +10,8 @@ if (process.platform === 'win32' && process.arch === 'x64') {
 
 // https://vite.dev/config/
 export default defineConfig({
-    // If deploying under a subpath (e.g., GitHub Pages: /quizmyride/), set base accordingly.
-    // You can override via env: set VITE_BASE_URL to desired base path.
-    base: process.env.VITE_BASE_URL || '/quizmyride/',
     plugins: [react()],
+    base: '/', // ✅ use root path on Netlify
     build: {
         rollupOptions: {
             // Prevent bundling platform-specific native packages that are not needed in the browser
