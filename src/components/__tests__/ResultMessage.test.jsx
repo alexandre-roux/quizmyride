@@ -1,6 +1,6 @@
 import {render, screen} from '@testing-library/react';
 import {describe, expect, it} from 'vitest';
-import ResultMessage from '../ResultMessage.jsx';
+import ResultMessage from '../ResultMessage';
 
 describe('ResultMessage', () => {
     it('shows congratulations when perfect', () => {
