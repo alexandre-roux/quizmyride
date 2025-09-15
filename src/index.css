@@ -15,6 +15,8 @@
     color-scheme: light dark;
     background-color: #242424;
     --traffic-yellow: #F0CA00;
+    /* Base URL for assets; set at runtime in main.jsx */
+    --bg-url: url('/images/background.webp');
 
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -38,7 +40,7 @@ body {
     place-items: center;
     min-width: 320px;
     min-height: 100vh;
-    background-image: url('/images/background.webp');
+    background-image: var(--bg-url);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
