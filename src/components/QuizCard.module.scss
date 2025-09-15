@@ -4,38 +4,85 @@
     align-items: center;
     text-align: center;
     width: 100%;
-    max-width: 1200px; /* constrain overall card width on large screens */
+    max-width: 75rem; /* 1200px */
     margin: 0 auto;
 
     h2 {
         margin-top: 0;
     }
 
-    img {
-        height: 50vh;
-        width: 100%; /* make image fill the card width */
-        max-width: 800px; /* shared visual width for both image and answers */
-        object-fit: cover;
+    /* Wrapper that shrink-wraps to the image width so answers match exactly */
+    .media {
+        width: fit-content; /* shrink to content (image) */
+        max-width: 50rem; /* same cap as before */
+        margin: 0 auto; /* center within card */
+        display: block;
+        max-inline-size: 100%;
     }
 
-    .answers {
+    /* Image sizing inside the media wrapper */
+    .media img {
+        display: block;
+        width: auto; /* allow width to be driven by height constraint */
+        max-width: 100%; /* don't overflow the wrapper */
+        height: auto;
+        max-height: 55vh; /* keep within viewport */
+        object-fit: contain;
+        object-position: center;
+        margin: 0 auto;
+    }
+
+    /* Answers take the exact width of the wrapper (i.e., the image) */
+    .media .answers {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
+        gap: 0.75rem; /* 12px */
         width: 100%;
-        max-width: 800px; /* match image width so two-button row equals image width */
-        margin-top: 16px;
+        max-width: none; /* ensure no extra cap beyond wrapper */
+        margin: 1rem 0 0; /* align with image, already centered by wrapper */
+        box-sizing: border-box; /* keep widths consistent incl. borders */
 
         /* Layout-only adjustments for buttons; visual styles come from global index.css */
         button {
             width: 100%;
-            min-height: 56px; /* ensure ample hit area while letting global styles define look */
+            min-height: 3rem; /* 48px */
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             word-break: break-word;
             white-space: normal;
+        }
+    }
+
+    /* Breakpoints */
+    @media (max-width: 768px) {
+        .media img {
+            max-height: 45vh;
+        }
+        .media .answers {
+            grid-template-columns: 1fr;
+        }
+        .media .answers button {
+            min-height: 2.5rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .media img {
+            max-height: 38vh;
+        }
+        .media .answers {
+            gap: 0.5rem;
+        }
+        .media .answers button {
+            min-height: 2.1rem;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .media .answers button {
+            min-height: 3.5rem;
         }
     }
 }

@@ -1,6 +1,16 @@
 .main-container {
     background-color: rgba(255, 255, 255, 0.9);
-    margin: 2rem auto;
-    padding: 5vh;
+    margin: 0 auto;
+    padding: clamp(0.75rem, 4vh, 2rem);
     border-radius: 2vh;
+    width: min(92vw, 56.25rem);
+    max-height: 92svh;
+    overflow: hidden;
+}
+
+@media (max-width: 480px) {
+    .main-container {
+        margin: 5px;
+        padding: 8px;
+    }
 }
