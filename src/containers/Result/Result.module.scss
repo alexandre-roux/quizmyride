@@ -10,7 +10,14 @@
     }
 
     button {
-        margin-top: 20px;
+        margin-top: 1.25rem; /* 20px */
+    }
+
+    @media (max-width: 480px) {
+        button {
+            width: fit-content;
+            max-width: 100%;
+        }
     }
 }
 
