@@ -114,16 +114,14 @@ const QuizCard = ({selectedBus, setSelectedBusIndex, setNumberOfGoodAnswers}: Qu
             <h2>What model is it?</h2>
             {selectedBus && (
                 <>
-                    <div className={styles.media}>
-                        <img src={selectedBus.image} alt={selectedBus.model} loading="lazy"/>
-                        <AnswerOptions
-                            className={styles.answers}
-                            answers={answers}
-                            selectedIndex={selectedAnswerIndex}
-                            correctAnswer={selectedBus.model}
-                            onSelect={handleClick}
-                        />
-                    </div>
+                    <img src={selectedBus.image} alt={selectedBus.model} loading="lazy"/>
+                    <AnswerOptions
+                        className={styles.answers}
+                        answers={answers}
+                        selectedIndex={selectedAnswerIndex}
+                        correctAnswer={selectedBus.model}
+                        onSelect={handleClick}
+                    />
                 </>
             )}
         </div>
