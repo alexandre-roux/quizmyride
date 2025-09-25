@@ -1,7 +1,7 @@
 import {render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {describe, expect, it, vi} from 'vitest';
-import AnswerOptions from '../AnswerOptions.jsx';
+import AnswerOptions from '../AnswerOptions';
 
 describe('AnswerOptions', () => {
     it('renders up to 4 answer buttons and triggers onSelect with index', async () => {
