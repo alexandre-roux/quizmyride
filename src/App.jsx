@@ -5,7 +5,6 @@ import {useState} from "react";
 import Result from "./containers/Result/Result.jsx";
 
 function App() {
-    // Lazy-load sounds: no eager preloading here to improve initial load time
     const numberOfQuestions = 3;
     const [numberOfGoodAnswers, setNumberOfGoodAnswers] = useState(0);
 
