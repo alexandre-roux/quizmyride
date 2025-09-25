@@ -15,7 +15,7 @@
     color-scheme: light dark;
     background-color: #242424;
     --traffic-yellow: #F0CA00;
-    /* Base URL for assets; set at runtime in main.jsx; default to none to avoid broken URLs under subpath deploys */
+    /* Base URL for assets; set at runtime in main.tsx; default to none to avoid broken URLs under subpath deploys */
     --bg-url: none;
 
     font-synthesis: none;

@@ -69,24 +69,24 @@ Example tests live under `src/components/__tests__/`.
 ## Project Structure
 
 - src/
-  - App.jsx — top-level layout and screen switching
+  - App.tsx — top-level layout and screen switching
   - components/
-    - QuizCard.jsx and styles — renders an image and answer options
+    - QuizCard.tsx and styles — renders an image and answer options
   - containers/
     - Home/ — landing page and start button
     - Quiz/ — quiz flow and progress management
     - Result/ — end-of-quiz summary
   - utils/
-    - audioManager.js — preloads and plays short sound effects
+    - audioManager.ts — preloads and plays short sound effects
 - public/ — static assets (e.g., images, logo)
 - index.html — app root
-- vite.config.js — Vite configuration
+- vite.config.ts — Vite configuration
 
 ## Notes
 
 - Audio and images are lazy-loaded to improve initial load times. Sounds are warmed up on first user interaction to
   minimize latency before playback.
-- The default number of questions is currently set in `src/App.jsx`.
+- The default number of questions is currently set in `src/App.tsx`.
 
 ## Contributing
 

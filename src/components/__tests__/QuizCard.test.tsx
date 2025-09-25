@@ -9,6 +9,9 @@ vi.mock('../QuizCard.module.scss', () => ({default: {'quiz-card': 'quiz-card', a
 // Mock audioManager.getAudio to provide a controllable audio stub
 vi.mock('../../utils/audioManager', () => {
     class AudioStub extends EventTarget {
+        currentTime: number;
+        paused: boolean;
+        ended: boolean;
         constructor() {
             super();
             this.currentTime = 0;
@@ -30,18 +33,18 @@ vi.mock('../../utils/audioManager', () => {
             this.paused = true;
         }
 
-        addEventListener(...args) {
+        addEventListener(...args: Parameters<EventTarget['addEventListener']>) {
             return EventTarget.prototype.addEventListener.call(this, ...args);
         }
 
-        removeEventListener(...args) {
+        removeEventListener(...args: Parameters<EventTarget['removeEventListener']>) {
             return EventTarget.prototype.removeEventListener.call(this, ...args);
         }
     }
 
-    const cache = {};
+    const cache: Record<string, InstanceType<typeof AudioStub>> = {};
     return {
-        getAudio: (key) => {
+        getAudio: (key: string) => {
             if (!cache[key]) cache[key] = new AudioStub();
             return cache[key];
         }
@@ -59,10 +62,8 @@ describe('QuizCard', () => {
         render(
             <QuizCard
                 selectedBus={selectedBus}
-                setSelectedBusIndex={() => {
-                }}
-                setNumberOfGoodAnswers={() => {
-                }}
+                setSelectedBusIndex={() => {}}
+                setNumberOfGoodAnswers={() => {}}
             />
         );
 
@@ -74,9 +75,9 @@ describe('QuizCard', () => {
     it('increments score on correct answer and advances after sound ends', async () => {
         const user = userEvent.setup();
         const setIndex = vi.fn();
-        const setGood = vi.fn((updater) => {
+        const setGood = vi.fn((updater: unknown) => {
             // support functional updates
-            if (typeof updater === 'function') updater(0);
+            if (typeof updater === 'function') (updater as (n: number) => void)(0);
         });
 
         render(
@@ -104,10 +105,8 @@ describe('QuizCard', () => {
         render(
             <QuizCard
                 selectedBus={selectedBus}
-                setSelectedBusIndex={() => {
-                }}
-                setNumberOfGoodAnswers={() => {
-                }}
+                setSelectedBusIndex={() => {}}
+                setNumberOfGoodAnswers={() => {}}
             />
         );
 
