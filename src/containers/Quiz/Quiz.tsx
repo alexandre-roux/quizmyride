@@ -7,10 +7,11 @@ export type QuizProps = {
     numberOfQuestions: number
     setDisplayQuiz: React.Dispatch<React.SetStateAction<boolean>>
     setDisplayResult: React.Dispatch<React.SetStateAction<boolean>>
+    numberOfGoodAnswers: number
     setNumberOfGoodAnswers: React.Dispatch<React.SetStateAction<number>>
 }
 
-const Quiz = ({numberOfQuestions, setDisplayQuiz, setDisplayResult, setNumberOfGoodAnswers}: QuizProps) => {
+const Quiz = ({numberOfQuestions, setDisplayQuiz, setDisplayResult, numberOfGoodAnswers, setNumberOfGoodAnswers}: QuizProps) => {
     const [selectedBuses, setSelectedBuses] = React.useState<(Bus & { answers: string[] })[]>([])
     const [selectedBusIndex, setSelectedBusIndex] = React.useState(0)
     const [isFadingOut, setIsFadingOut] = React.useState(false)
@@ -59,6 +60,8 @@ const Quiz = ({numberOfQuestions, setDisplayQuiz, setDisplayResult, setNumberOfG
 
     return (
         <div className={`${styles['quiz-container']} ${styles['fade-in']} ${isFadingOut ? styles['fade-out'] : ''}`}>
+            <h2>What model is it?</h2>
+            <h3>Score: {numberOfGoodAnswers}/{numberOfQuestions}</h3>
             {selectedBuses.length > 0 && (
                 <QuizCard
                     selectedBus={selectedBuses[displayIndex]}

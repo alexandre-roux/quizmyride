@@ -7,21 +7,8 @@
     max-width: 75rem; /* 1200px */
     margin: 0 auto;
 
-    h2 {
-        margin-top: 0;
-    }
-
-    /* Wrapper that shrink-wraps to the image width so answers match exactly */
-    .media {
-        width: fit-content; /* shrink to content (image) */
-        max-width: 50rem; /* same cap as before */
-        margin: 0 auto; /* center within card */
-        display: block;
-        max-inline-size: 100%;
-    }
-
-    /* Image sizing inside the media wrapper */
-    .media img {
+    /* Image sizing (formerly .media img) */
+    img {
         display: block;
         width: auto; /* allow width to be driven by height constraint */
         max-width: 100%; /* don't overflow the wrapper */
@@ -33,7 +20,7 @@
     }
 
     /* Answers take the exact width of the wrapper (i.e., the image) */
-    .media .answers {
+    .answers {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 0.75rem; /* 12px */
@@ -57,28 +44,28 @@
 
     /* Breakpoints */
     @media (max-width: 768px) {
-        .media img {
+        img {
             max-height: 45vh;
         }
-        .media .answers {
+        .answers {
             grid-template-columns: 1fr;
         }
-        .media .answers button {
+        .answers button {
             min-height: 2.5rem;
         }
     }
 
     @media (max-width: 480px) {
-        .media img {
+        img {
             max-height: 42vh;
         }
-        .media .answers button {
+        .answers button {
             min-height: 2.25rem;
         }
     }
 
     @media (min-width: 1200px) {
-        .media .answers button {
+        .answers button {
             min-height: 3.5rem;
         }
     }
