@@ -111,7 +111,6 @@ const QuizCard = ({selectedBus, setSelectedBusIndex, setNumberOfGoodAnswers}: Qu
 
     return (
         <div className={styles['quiz-card']}>
-            <h2>What model is it?</h2>
             {selectedBus && (
                 <>
                     <div className={styles.media}>

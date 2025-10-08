@@ -19,6 +19,7 @@ function App() {
           numberOfQuestions={numberOfQuestions}
           setDisplayQuiz={setDisplayQuiz}
           setDisplayResult={setDisplayResult}
+          numberOfGoodAnswers={numberOfGoodAnswers}
           setNumberOfGoodAnswers={setNumberOfGoodAnswers}
         />
       ) : displayResult ? (
