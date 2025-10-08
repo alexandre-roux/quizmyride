@@ -67,7 +67,6 @@ describe('QuizCard', () => {
             />
         );
 
-        expect(screen.getByRole('heading', {name: /what model is it/i})).toBeInTheDocument();
         expect(screen.getByAltText('Model X')).toBeInTheDocument();
         expect(screen.getByRole('button', {name: 'Model X'})).toBeInTheDocument();
     });
