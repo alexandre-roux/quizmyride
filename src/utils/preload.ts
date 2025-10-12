@@ -1,5 +1,5 @@
 import buses from '../data/buses'
-import {preloadAllSounds} from './audioManager'
+import * as audio from './audioManager'
 
 let started = false
 let imageHolders: HTMLImageElement[] = []
@@ -54,7 +54,9 @@ export async function preloadAssets(): Promise<void> {
 
     // Kick off audio preloading (non-blocking)
     try {
-        preloadAllSounds()
+        // Use namespace import to avoid hard failure if the export is absent in some environments
+        // Optional chaining prevents runtime errors when not available
+        (audio as any).preloadAllSounds?.()
     } catch {
         /* ignore */
     }
