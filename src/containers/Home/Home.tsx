@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react'
 import styles from './Home.module.scss'
 import {play, warmUp} from '../../utils/audioManager'
+import {preloadAssets} from '../../utils/preload'
 
 export type HomeProps = {
     numberOfQuestions: number
@@ -14,6 +15,11 @@ const Home = ({numberOfQuestions, setDisplayQuiz, setNumberOfGoodAnswers}: HomeP
     useEffect(() => {
         setNumberOfGoodAnswers(0)
     }, [setNumberOfGoodAnswers])
+
+    // Preload images and sounds as soon as Home is displayed
+    useEffect(() => {
+        void preloadAssets()
+    }, [])
 
     const onButtonClick = async () => {
         // trigger fade-out animation

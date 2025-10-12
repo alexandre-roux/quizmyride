@@ -129,3 +129,24 @@ export function warmUp() {
     return Promise.resolve()
   }
 }
+
+
+export function preloadAllSounds() {
+  try {
+    const keys = Object.keys(soundsRel)
+    for (const key of keys) {
+      const a = getAudio(key)
+      if (a) {
+        try {
+          a.preload = 'auto'
+          // Trigger the browser to fetch and buffer metadata/audio into cache
+          a.load()
+        } catch {
+          /* ignore individual audio load errors */
+        }
+      }
+    }
+  } catch {
+    /* ignore */
+  }
+}
